@@ -30,5 +30,20 @@ namespace Ninokuni_Script_Importer
             return this.Table.Rows[y].ItemArray[x];
         }
 
+        public int SearchCellInCol(string data, int row)
+        {
+            for (int i = 0; i < this.NumCol; i++)
+                if (GetCell(i, row).ToString() == data)
+                    return i;
+            return -1;
+        }
+
+        public int SearchCellInRow(string data, int column)
+        {
+            for (int i = 0; i < this.NumRow; i++)
+                if (GetCell(column, i).ToString() == data)
+                    return i;
+            return -1;
+        }
     }
 }
