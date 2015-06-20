@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Excel;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using Excel;
-using System.Data;
 
 namespace Ninokuni_Script_Importer
 {
@@ -15,9 +15,8 @@ namespace Ninokuni_Script_Importer
         public int NumCol { get { return Table.Columns.Count; } }
         public int NumRow { get { return Table.Rows.Count; } }
 
-        public Excel(string path)
+        public Excel(Stream stream)
         {
-            FileStream stream = new FileStream(path, FileMode.Open);
             IExcelDataReader excelReader2007 = ExcelReaderFactory.CreateOpenXmlReader(stream);
             DataSet result = excelReader2007.AsDataSet();
             this.Table = result.Tables[0];
