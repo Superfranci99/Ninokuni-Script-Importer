@@ -14,6 +14,7 @@ namespace Ninokuni_Script_Importer
         private DataTable Table { get; set; }
         public int NumCol { get { return Table.Columns.Count; } }
         public int NumRow { get { return Table.Rows.Count; } }
+        public int ColTranslated { get { return SearchCellInCol("Translated Text", 1); } }
 
         public Excel(Stream stream)
         {
