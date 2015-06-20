@@ -30,7 +30,7 @@ namespace Ninokuni_Script_Importer
         public void StartProcess()
         {
             string dataType = this.ExcelData.GetCell(1, 0).ToString().Remove(0, 10);
-            if (dataType != "script")
+            if (dataType != "Script")
                 throw new NotImplementedException("DataType conversion still not supported!");
 
             XElement root = new XElement(dataType);
