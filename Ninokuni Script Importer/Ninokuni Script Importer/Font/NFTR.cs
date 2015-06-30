@@ -10,6 +10,7 @@ namespace Ninokuni_Script_Importer.Font
     class NFTR : NitroFile
     {
         public FINF Finf { get; set; }
+        public CGLP Cglp { get; set; }
 
         public byte[] MagicId   { get; set; }
         public ushort Endianess { get; set; }
@@ -31,6 +32,9 @@ namespace Ninokuni_Script_Importer.Font
 
             this.Finf = new FINF();
             this.Finf.Read(stream);
+
+            this.Cglp = new CGLP();
+            this.Cglp.Read(stream);
         }
 
         public int GetTextLength(string data)

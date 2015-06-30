@@ -10,7 +10,7 @@ namespace Ninokuni_Script_Importer.Font
     abstract class NitroFile
     {
         public abstract string Name { get; }
-        public abstract void   Read(Stream stream);
 
+        public abstract void Read(Stream stream);
     }
 }
