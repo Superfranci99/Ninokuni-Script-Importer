@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Converter.cs" />
     <Compile Include="Excel.cs" />
+    <Compile Include="Font.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
