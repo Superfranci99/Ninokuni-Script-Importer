@@ -49,7 +49,9 @@
   <ItemGroup>
     <Compile Include="Converter.cs" />
     <Compile Include="Excel.cs" />
-    <Compile Include="Font.cs" />
+    <Compile Include="Font\FINF.cs" />
+    <Compile Include="Font\NFTR.cs" />
+    <Compile Include="Font\NitroFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

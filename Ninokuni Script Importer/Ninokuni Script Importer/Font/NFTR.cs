@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Ninokuni_Script_Importer
+namespace Ninokuni_Script_Importer.Font
 {
-    class Font
+    class NFTR : NitroFile
     {
         public byte[] MagicId   { get; set; }
         public ushort Endianess { get; set; }
@@ -15,12 +15,14 @@ namespace Ninokuni_Script_Importer
         public uint   FileSize  { get; set; }
         public ushort NumBlocks { get; set; }
 
-        public Font()
+        public NFTR()
         {
             // nothing to do...
         }
 
-        public void Read(Stream stream)
+        public override string Name { get { return "NFTR"; } }
+
+        public override void Read(Stream stream)
         {
             BinaryReader br = new BinaryReader(stream);
             this.MagicId   = br.ReadBytes(4);
