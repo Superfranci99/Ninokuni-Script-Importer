@@ -16,6 +16,7 @@ namespace Ninokuni_Script_Importer.Font
         public ushort Endianess { get; set; }
         public ushort Version   { get; set; }
         public uint   FileSize  { get; set; }
+        public ushort BlockSize { get; set; }
         public ushort NumBlocks { get; set; }
 
         public override string Name { get { return "NFTR"; } }
@@ -28,6 +29,7 @@ namespace Ninokuni_Script_Importer.Font
             this.Endianess = br.ReadUInt16();
             this.Version   = br.ReadUInt16();
             this.FileSize  = br.ReadUInt32();
+            this.BlockSize = br.ReadUInt16();
             this.NumBlocks = br.ReadUInt16();
 
             this.Finf = new FINF();
