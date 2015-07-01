@@ -11,6 +11,7 @@ namespace Ninokuni_Script_Importer.Font
     {
         public FINF Finf { get; set; }
         public CGLP Cglp { get; set; }
+        public CWDH Cwdh { get; set; }
 
         public byte[] MagicId   { get; set; }
         public ushort Endianess { get; set; }
@@ -37,6 +38,9 @@ namespace Ninokuni_Script_Importer.Font
 
             this.Cglp = new CGLP();
             this.Cglp.Read(stream);
+
+            this.Cwdh = new CWDH();
+            this.Cwdh.Read(stream);
         }
 
         public int GetTextLength(string data)
