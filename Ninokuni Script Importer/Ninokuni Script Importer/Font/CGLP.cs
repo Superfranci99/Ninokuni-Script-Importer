@@ -22,7 +22,7 @@ namespace Ninokuni_Script_Importer.Font
             this.BlockSize = br.ReadUInt32();
 
             // this block contains character glyph, this tool doesn't need to read this data...
-            br.BaseStream.Seek(this.BlockSize - 4, SeekOrigin.Current);
+            br.BaseStream.Seek(this.BlockSize - 8, SeekOrigin.Current);
         }
     }
 }
