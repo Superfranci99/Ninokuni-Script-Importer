@@ -165,39 +165,7 @@ namespace Ninokuni_Script_Importer.Font
 			return -1;
 		}
 
-		public void InsertCharCode(int imgIndex, ushort charCode)
-		{
-			if (charCode < this.FirstChar || charCode > this.LastChar) {
-				throw new ArgumentException("Invalid char code");
-			}
 
-			// Update size
-			if (this.Type == 0 && this.Map.GetLength(0) == 0)
-				this.Size += 2;
-			else if (this.Type == 2) {
-				if (this.Map.GetLength(0) == 0)
-					this.Size += 2;
-				this.Size += 4;
-			}
-			
 
-			// Resize and do a binary search copy
-			int[,] map = new int[this.Map.GetLength(0) + 1, 2];
-			for (int i = 0, j = 0; i < map.GetLength(0); i++) {
-				if (j < this.Map.GetLength(0) && charCode > this.Map[j, 0]) {
-					map[i, 0] = this.Map[j, 0];
-					map[i, 1] = this.Map[j, 1];
-					j++;
-				} else if (charCode != 0xFFFF) {
-					map[i, 0] = charCode;
-					map[i, 1] = imgIndex;
-					charCode = 0xFFFF; // It won't be copied again
-				} else {
-					throw new Exception("Unknown error");
-				}
-			}
-
-			this.Map = map;
-		}
     }
 }
