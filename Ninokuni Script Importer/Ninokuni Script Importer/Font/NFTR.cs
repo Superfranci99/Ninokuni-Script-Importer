@@ -47,9 +47,18 @@ namespace Ninokuni_Script_Importer.Font
             this.Cmap.Read(stream);
         }
 
-        public int GetTextLength(string data)
+        public int GetStringLength(string data)
         {
-            throw new NotImplementedException();
+            int result = 0;
+            foreach (char c in data)
+                result += GetCharLength(c);
+            return result;
         }
+
+        public int GetCharLength(char data)
+        {
+            return this.Cwdh.Widths[this.Cmap.Map[this.Cmap.GetIndexCode(data), 1]].Advance;
+        }
+
     }
 }

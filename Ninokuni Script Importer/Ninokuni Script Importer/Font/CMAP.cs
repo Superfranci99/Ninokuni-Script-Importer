@@ -165,7 +165,18 @@ namespace Ninokuni_Script_Importer.Font
 			return -1;
 		}
 
+        public int GetIndexCode(ushort charCode)
+        {
+            if(!this.Contains(charCode))
+                throw new ArgumentException();
 
+            for (int i = 0; i < this.Map.GetLength(0); i++)
+                if (this.Map[i, 0] == charCode)
+                    return i;
 
+            throw new ArgumentException();
+        }
+
+		
     }
 }
