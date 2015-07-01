@@ -21,6 +21,7 @@ namespace Ninokuni_Script_Importer.Font
         public override void Read(Stream stream)
         {
             BinaryReader br = new BinaryReader(stream);
+            long pos = br.BaseStream.Position;
 
             this.MagicID    = br.ReadBytes(4);
             this.BlockSize  = br.ReadUInt32();
@@ -36,6 +37,8 @@ namespace Ninokuni_Script_Importer.Font
 
             for (int i = 0; i < numWidths; i++)
                 this.Widths[i] = GlyphWidth.FromStream(stream);
+
+            br.BaseStream.Seek(pos + this.BlockSize, SeekOrigin.Begin);
         }
     }
 }
