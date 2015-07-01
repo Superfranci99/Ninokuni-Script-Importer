@@ -52,6 +52,7 @@
     <Compile Include="Font\CGLP.cs" />
     <Compile Include="Font\CWDH.cs" />
     <Compile Include="Font\FINF.cs" />
+    <Compile Include="Font\GlyphWidth.cs" />
     <Compile Include="Font\NFTR.cs" />
     <Compile Include="Font\NitroFile.cs" />
     <Compile Include="Program.cs" />
