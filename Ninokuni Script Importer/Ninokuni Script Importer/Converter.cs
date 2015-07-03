@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Ninokuni_Script_Importer.Font;
 
 namespace Ninokuni_Script_Importer
 {
@@ -13,15 +14,24 @@ namespace Ninokuni_Script_Importer
         public Excel     ExcelData { get; set; }
         public XDocument XmlDoc    { get; set; }
         public string    XmlPath   { get; set; }
+        public TextManip Manip     { get; set; }
 
         private const int START_ROW_DATA = 2;
 
-        public Converter(string excelPath, string xmlPath)
+        public Converter(string excelPath, string xmlPath, string fontPath, int maxLength)
         {
-            this.ExcelData = new Excel(new FileStream(excelPath, FileMode.Open));      
+            this.ExcelData = new Excel(new FileStream(excelPath, FileMode.Open));  // Excel
+            
+            // XML
             this.XmlDoc = new XDocument();
             XmlDoc.Declaration = new XDeclaration("1.0", "utf-8", "yes");
             this.XmlPath = xmlPath;
+
+            // Font
+            NFTR font = new NFTR();
+            Stream fs = new FileStream(fontPath, FileMode.Open);
+            font.Read(fs);
+            this.Manip = new TextManip(font, maxLength);
         }
 
         /// <summary>
@@ -52,7 +62,7 @@ namespace Ninokuni_Script_Importer
 
                 // add all elements and attributes of this row
                 XElement el = SetAttributes(ExcelData.GetCell(1, y).ToString());
-                for (int i = 2; i < ExcelData.ColTranslated ; i++)
+                for (int i = 2; i < ExcelData.ColTranslated - 1; i++)
                 {
                     if (string.IsNullOrWhiteSpace(ExcelData.GetCell(i, y).ToString()))
                         continue;
@@ -60,7 +70,8 @@ namespace Ninokuni_Script_Importer
                     el = (XElement)el.LastNode;
                 }
 
-                el.Value = ExcelData.GetCell(ExcelData.ColTranslated, y).ToString();
+                string aaa = ExcelData.GetCell(ExcelData.ColTranslated, y).ToString();
+                el.Value = Manip.FormatString(aaa);
                 block.Add(el); // save the element read
             }
 

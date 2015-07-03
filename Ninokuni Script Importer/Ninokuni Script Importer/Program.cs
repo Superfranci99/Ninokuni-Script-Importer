@@ -11,15 +11,13 @@ namespace Ninokuni_Script_Importer
     class Program
     {
         public static string pathExcel = @"D:\Francesco\Desktop\a.xlsx";
-        public static string pathFont = @"D:\Francesco\Documenti\NDS\Hacking\Laboratory\ninokuni\font\font8.NFTR";
+        public static string pathFont = @"D:\Francesco\Dropbox\Text translated\font\font12.NFTR";
+        public static string pathXml   = @"D:\Francesco\Desktop\out.xml";
 
         static void Main(string[] args)
         {
-            //Converter converter = new Converter(pathExcel, @"D:\Francesco\Desktop\out.xml");
-            //converter.StartProcess();
-            NFTR font = new NFTR();
-            Stream fs = new FileStream(pathFont, FileMode.Open);
-            font.Read(fs);
+            Converter converter = new Converter(pathExcel, pathXml, pathFont, 223);
+            converter.StartProcess();
         }
     }
 }

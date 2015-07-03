@@ -12,7 +12,7 @@ namespace Ninokuni_Script_Importer.Font
         public FINF Finf { get; set; }
         public CGLP Cglp { get; set; }
         public CWDH Cwdh { get; set; }
-        public CMAP Cmap { get; set; }
+        public List<CMAP> Cmaps { get; set; }
 
         public byte[] MagicId   { get; set; }
         public ushort Endianess { get; set; }
@@ -43,8 +43,13 @@ namespace Ninokuni_Script_Importer.Font
             this.Cwdh = new CWDH();
             this.Cwdh.Read(stream);
 
-            this.Cmap = new CMAP();
-            this.Cmap.Read(stream);
+            int i = 0;
+            this.Cmaps = new List<CMAP>();
+            while (stream.Position < stream.Length)
+            {
+                this.Cmaps.Add(new CMAP());
+                this.Cmaps[i++].Read(stream);
+            }       
         }
 
         public int GetStringLength(string data)
@@ -57,7 +62,12 @@ namespace Ninokuni_Script_Importer.Font
 
         public int GetCharLength(char data)
         {
-            return this.Cwdh.Widths[this.Cmap.Map[this.Cmap.GetIndexCode(data), 1]].Advance;
+            foreach (CMAP cmap in this.Cmaps)
+            {
+                if(cmap.Contains(data))
+                    return this.Cwdh.Widths[cmap.Map[cmap.GetIndexCode(data), 1]].Advance;
+            }
+            throw new NotImplementedException();
         }
 
     }

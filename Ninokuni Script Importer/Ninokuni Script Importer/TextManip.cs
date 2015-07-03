@@ -20,24 +20,27 @@ namespace Ninokuni_Script_Importer
 
         public string FormatString(string data)
         {
+            data = FixAccents(data);
+
             if (IsFormatted(data))
                 return data;
 
-            string[] lines = data.Replace("\r\n", " ").Replace("\n", " ").Split(' ');
+            data = data.Replace("\r\n", " ").Replace("\n", " ");
+            string[] lines = data.Split(' ');
 
             int counter = 0;
             StringBuilder sb = new StringBuilder();
 
             foreach (string line in lines)
             {
-                if ((Font.GetStringLength(line) + counter) > this.MaxLength)
+                if ((Font.GetStringLength(line.Replace("{3:4}", "").Replace("{1:2}", "")) + counter) > this.MaxLength)
                 {
-                    sb.AppendLine();
+                    sb.Append("\r\n");
                     counter = 0;
                 }
 
-                counter += Font.GetStringLength(line);
-                sb.Append(line);
+                counter += Font.GetStringLength(line + " ");
+                sb.Append(line + " ");
             }
 
             return sb.ToString();
@@ -45,15 +48,39 @@ namespace Ninokuni_Script_Importer
 
         public bool IsFormatted(string data)
         {
-            if (Font.GetStringLength(data) > this.MaxLength)
+            if (Font.GetStringLength(data.Replace("\r\n", "").Replace("\n", "").Replace("{3:4}", "").Replace("{1:2}","")) <= this.MaxLength)
                 return true;
 
-            string[] lines = data.Replace("\r\n", "\r").Split('r');
+            string[] lines = FixAccents(data.Replace("\r\n", "\n")).Split('\n');
             foreach (string line in lines)
-                if (Font.GetStringLength(line) > this.MaxLength)
+                if (Font.GetStringLength(line.Replace("{3:4}", "").Replace("{1:2}", "")) > this.MaxLength)
                     return false;
 
             return true;
+        }
+
+        public static string FixAccents(string data)
+        {
+            string result = "";
+
+            foreach (char c in data)
+            {
+                string newChar = c.ToString();
+                switch (c)
+                {
+                    case 'à': newChar = ((char)166).ToString(); break;
+                    case 'è': newChar = ((char)167).ToString(); break;
+                    case 'é': newChar = ((char)168).ToString(); break;
+                    case 'ì': newChar = ((char)169).ToString(); break;
+                    case 'ò': newChar = ((char)170).ToString(); break;
+                    case 'ù': newChar = ((char)171).ToString(); break;
+                    case 'È': newChar = "E'"; break;
+                    case '…': newChar = "..."; break;
+                }
+                result += newChar;
+            }
+
+            return result;
         }
     }
 }

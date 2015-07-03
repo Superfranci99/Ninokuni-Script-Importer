@@ -123,6 +123,7 @@ namespace Ninokuni_Script_Importer.Font
 				break;
 			}
 
+            br.BaseStream.Position = NextCmap - 8;
 			br = null;
 		}
 
