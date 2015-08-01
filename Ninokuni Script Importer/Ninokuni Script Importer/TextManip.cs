@@ -68,19 +68,50 @@ namespace Ninokuni_Script_Importer
                 string newChar = c.ToString();
                 switch (c)
                 {
-                    case 'à': newChar = ((char)166).ToString(); break;
+                    /*case 'à': newChar = ((char)166).ToString(); break;
                     case 'è': newChar = ((char)167).ToString(); break;
                     case 'é': newChar = ((char)168).ToString(); break;
                     case 'ì': newChar = ((char)169).ToString(); break;
                     case 'ò': newChar = ((char)170).ToString(); break;
-                    case 'ù': newChar = ((char)171).ToString(); break;
+                    case 'ù': newChar = ((char)171).ToString(); break;*/
+                    case 'à': newChar = "ｦ"; break;
+                    case 'è': newChar = "ｧ"; break;
+                    case 'é': newChar = "ｨ"; break;
+                    case 'ì': newChar = "ｩ"; break;
+                    case 'ò': newChar = "ｪ"; break;
+                    case 'ù': newChar = "ｫ"; break;
                     case 'È': newChar = "E'"; break;
                     case '…': newChar = "..."; break;
+                    case '♪': newChar = ""; break;
+                    case 'ä': newChar = "a"; break;
                 }
                 result += newChar;
             }
 
             return result;
+        }
+
+        public List<string> Split(string data, char separator)
+        {
+            List<string> strings = new List<string>();
+            bool test = false;
+            string result = "";
+
+            foreach (char c in data)
+            {
+                if (c == '\"')
+                    test = !test;
+                else if ((c == separator) && !test)
+                {
+                    strings.Add(result);
+                    result = "";
+                }
+                else
+                    result += c;
+            }
+            strings.Add(result);
+
+            return strings;
         }
     }
 }

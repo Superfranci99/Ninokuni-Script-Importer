@@ -11,16 +11,16 @@ namespace Ninokuni_Script_Importer
 {
     class Converter
     {
-        public Excel     ExcelData { get; set; }
-        public XDocument XmlDoc    { get; set; }
-        public string    XmlPath   { get; set; }
-        public TextManip Manip     { get; set; }
+        public ExcelSheet ExcelData { get; set; }
+        public XDocument  XmlDoc    { get; set; }
+        public string     XmlPath   { get; set; }
+        public TextManip  Manip     { get; set; }
 
         private const int START_ROW_DATA = 2;
 
-        public Converter(string excelPath, string xmlPath, string fontPath, int maxLength)
+        public Converter(string excelPath, string xmlPath, NFTR font, int maxLength)
         {
-            this.ExcelData = new Excel(new FileStream(excelPath, FileMode.Open));  // Excel
+            this.ExcelData = new ExcelSheet(new FileStream(excelPath, FileMode.Open));  // Excel
             
             // XML
             this.XmlDoc = new XDocument();
@@ -28,9 +28,6 @@ namespace Ninokuni_Script_Importer
             this.XmlPath = xmlPath;
 
             // Font
-            NFTR font = new NFTR();
-            Stream fs = new FileStream(fontPath, FileMode.Open);
-            font.Read(fs);
             this.Manip = new TextManip(font, maxLength);
         }
 
@@ -44,7 +41,7 @@ namespace Ninokuni_Script_Importer
                 throw new NotImplementedException("DataType conversion still not supported!");
 
             XElement root = new XElement(dataType);
-            XElement block = null;
+            XElement block = null, previous = null;
 
             for (int y = START_ROW_DATA; y < ExcelData.NumRow; y++)
             {
@@ -61,13 +58,21 @@ namespace Ninokuni_Script_Importer
                     continue;
 
                 // add all elements and attributes of this row
-                XElement el = SetAttributes(ExcelData.GetCell(1, y).ToString());
+                XElement el = null;
+                if (ExcelData.GetCell(1, y).ToString() != "")
+                    el = SetAttributes(ExcelData.GetCell(1, y).ToString());
+                else if (previous != null)
+                    el = previous;
+                //XElement el = SetAttributes(ExcelData.GetCell(1, y).ToString());
+
+                previous = el;
+                
                 for (int i = 2; i < ExcelData.ColTranslated - 1; i++)
                 {
                     if (string.IsNullOrWhiteSpace(ExcelData.GetCell(i, y).ToString()))
                         continue;
                     el.Add(new XElement(ExcelData.GetCell(i, y).ToString()));
-                    el = (XElement)el.LastNode;
+                    el = (XElement)el.LastNode; //ERROREeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 }
 
                 string aaa = ExcelData.GetCell(ExcelData.ColTranslated, y).ToString();
@@ -85,7 +90,8 @@ namespace Ninokuni_Script_Importer
         /// <returns>XElement with tha informations of xmlAttributes</returns>
         public XElement SetAttributes(string xmlAttributes)
         {
-            List<string> attributes = xmlAttributes.Split(' ').ToList<string>();
+            //List<string> attributes = xmlAttributes.Split(' ').ToList<string>();
+            List<string> attributes = Manip.Split(xmlAttributes, ' ');
             XElement element = new XElement(attributes[0]);
             attributes.RemoveAt(0);
             foreach (string attr in attributes)

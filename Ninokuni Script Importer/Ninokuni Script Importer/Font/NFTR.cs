@@ -67,7 +67,7 @@ namespace Ninokuni_Script_Importer.Font
                 if(cmap.Contains(data))
                     return this.Cwdh.Widths[cmap.Map[cmap.GetIndexCode(data), 1]].Advance;
             }
-            throw new NotImplementedException();
+            return 12;
         }
 
     }

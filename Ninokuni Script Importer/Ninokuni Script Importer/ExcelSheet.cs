@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Ninokuni_Script_Importer
 {
-    class Excel
+    class ExcelSheet
     {
         private DataTable Table { get; set; }
         public int NumCol { get { return Table.Columns.Count; } }  // number of columns in the sheet
         public int NumRow { get { return Table.Rows.Count; } }  // number of rows in the sheet
         public int ColTranslated { get { return SearchCellInCol("Translated Text", 1); } }  // get the translated column
 
-        public Excel(Stream stream)
+        public ExcelSheet(Stream stream)
         {
             // initializing excel sheet
             IExcelDataReader excelReader2007 = ExcelReaderFactory.CreateOpenXmlReader(stream);
@@ -30,11 +30,11 @@ namespace Ninokuni_Script_Importer
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <returns>Cell content</returns>
-        public object GetCell(int x, int y)
+        public object GetCell(int y, int x)
         {
-            if (((x < 0) || (x > NumCol - 1)) || ((y < 0) || (y > NumRow - 1)))
-                return null;
-            return this.Table.Rows[y].ItemArray[x];
+            //if (((x < 0) || (x > NumCol - 1)) || ((y < 0) || (y > NumRow - 1)))
+                //return null;
+            return this.Table.Rows[y - 1].ItemArray[x - 1];
         }
 
         /// <summary>
